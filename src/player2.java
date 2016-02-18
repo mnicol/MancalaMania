@@ -22,7 +22,7 @@
 // studPlayer class
 // ################################################################
 
-public class studPlayer extends Player {
+public class player2 extends Player implements WeightAble {
 
 	/*
 	 * Use IDS search to find the best move. The step starts from 1 and
@@ -32,11 +32,9 @@ public class studPlayer extends Player {
 	// Alpha-Beta Search
 	public void move(GameState state) {
 		//I don't know whether or not to call on max action or min action here.
-		int currentDepth = 1;
-		while (true){
-			move = maxAction(state, currentDepth);
-			currentDepth ++;
-		}
+		int currentDepth = 5;
+			move = minAction(state, currentDepth);
+		
 		
 	}
 
@@ -165,7 +163,8 @@ public class studPlayer extends Player {
 	private int[] weights = { 6, 5, 4, 3, 2, 1, 20 };
 	private int sbe(GameState state) {
 		int toReturn = getWeightedTotal(state, weights);
-		
+		toReturn -= getWeightedTotal(state, weights);
+
 		return toReturn;
 	}
 

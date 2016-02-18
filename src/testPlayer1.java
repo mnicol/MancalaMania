@@ -22,7 +22,7 @@
 // studPlayer class
 // ################################################################
 
-public class studPlayer extends Player {
+public class testPlayer1 extends Player implements WeightAble {
 
 	/*
 	 * Use IDS search to find the best move. The step starts from 1 and
@@ -32,11 +32,10 @@ public class studPlayer extends Player {
 	// Alpha-Beta Search
 	public void move(GameState state) {
 		//I don't know whether or not to call on max action or min action here.
-		int currentDepth = 1;
-		while (true){
+		int currentDepth = 13;
+
 			move = maxAction(state, currentDepth);
-			currentDepth ++;
-		}
+
 		
 	}
 
@@ -71,7 +70,7 @@ public class studPlayer extends Player {
 				}
 			}
 		}
-		
+		System.out.println("ALPHA: " + alpha);
 		
 		return playerMove;
 	}
@@ -115,7 +114,9 @@ public class studPlayer extends Player {
 		int bestVal = Integer.MIN_VALUE;
 
 		for (int i = 0; i < 6; i++) {
+			System.out.println("Max:" + i);
 			if (!state.illegalMove(i)) {
+				
 				GameState temp = new GameState(state);
 
 				if (temp.applyMove(i)) {
@@ -143,6 +144,7 @@ public class studPlayer extends Player {
 		int bestVal = Integer.MAX_VALUE;
 
 		for (int i = 7; i < 13; i++) {
+			System.out.println("Min:" + i);
 			if (!state.illegalMove(i)) {
 				GameState temp = new GameState(state);
 
@@ -162,10 +164,11 @@ public class studPlayer extends Player {
 
 	// the sbe function for game state. Note that in the game state, the bins
 	// for current player are always in the bottom row.
-	private int[] weights = { 6, 5, 4, 3, 2, 1, 20 };
+	private int[] weights = { 1, 1, 2, 2, 1, 1, 4 };
+	private int[] test = {4,6,6,6,6,  7,9,9,9,9,  1,2,2,2,2,  0,1,1,1,1,   8,1,1,1,1,   9,2,2,2,2};
 	private int sbe(GameState state) {
-		int toReturn = getWeightedTotal(state, weights);
-		
+		int toReturn = state.stoneCount(6) - state.stoneCount(13);
+		System.out.println("SBE " + toReturn);
 		return toReturn;
 	}
 
