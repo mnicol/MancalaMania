@@ -11,15 +11,15 @@ public class smarterTester {
 	 */
 	public static void main(String[] args) {
 		StandardFighters optFigher = new StandardFighters();
-		
-		
+		//int max = (int) Integer.parseInt(args[1]);//here is a command line arg for you MART!
+		int max = 10;
+		for (int p = 0; p < max; p ++){
 		long startTime = System.currentTimeMillis();
 		PrintStream out;
 		try {
 			out = new PrintStream(new FileOutputStream("smarter"+startTime + ".txt"));
 			System.setOut(out);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -53,6 +53,7 @@ public class smarterTester {
 		long endTime   = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
+	}
 	}
 
 }
