@@ -10,7 +10,9 @@ public class smarterTester {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		StandardFighters optFigher = new StandardFighters();
+		
+		
 		long startTime = System.currentTimeMillis();
 		PrintStream out;
 		try {
@@ -23,9 +25,9 @@ public class smarterTester {
 		
 		
 		int numRandos = 100;
-		int numIters = 50;
+		int numIters = 500;
 		Colosseum colosseum = new Colosseum(7, numRandos, 0, null);
-		StandardFighters optFigher = new StandardFighters();
+		
 		optFigher.CreateRandomWeights();
 		
 		optFigher = colosseum.KeepOnSpawningAndFighting(optFigher, numIters);
