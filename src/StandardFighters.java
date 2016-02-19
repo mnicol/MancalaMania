@@ -23,6 +23,14 @@ public class StandardFighters extends BasePlayer {
 		gameStats = new ArrayList<>();
 		this.type = FighterType.RandomFighters;
 	}
+	
+	public StandardFighters(StandardFighters makeCopyOfThis){
+		this.type = makeCopyOfThis.type;
+		this.Weights = makeCopyOfThis.Weights.clone();
+		this.GamesLost = this.GamesTied = this.GamesWon = 0;
+		this.gameStats = new ArrayList<>();
+	}
+	
 	private static Random  rand = new Random();
 	public void CreateRandomWeights(){
 		for(int i = 0; i < TestSBE.NumWeights; i++){
