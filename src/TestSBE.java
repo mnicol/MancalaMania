@@ -2,6 +2,7 @@ public class TestSBE {
 
 	GameState state = null;
 	
+	public static final int NumWeights = 12;
 	public TestSBE(GameState state)
 	{
 		this.state = state;
@@ -30,7 +31,7 @@ public class TestSBE {
 	 * @param state
 	 * @return
 	 */
-	public int testSBE(GameState state)
+	public int testSBE(GameState state, double[] weights)
 	{	
 		// Get moves for playerA
 		System.out.println("**************************");
@@ -46,7 +47,7 @@ public class TestSBE {
 				
 				System.out.println("Move: " + i);
 				printGameState(temp);
-				System.out.println("SBE: " + sbe(temp));
+				System.out.println("SBE: " + sbe(temp, weights));
 				System.out.println();
 			}
 		}
@@ -66,12 +67,12 @@ public class TestSBE {
 				
 				System.out.println("Move: " + i);
 				printGameState(temp);
-				System.out.println("SBE: " + sbe(temp));
+				System.out.println("SBE: " + sbe(temp, weights));
 				System.out.println();
 			}
 		}
 		
-		return sbe(state);
+		return sbe(state, weights);
 	}
 	
 	private static void printGameState(GameState state)
@@ -80,27 +81,27 @@ public class TestSBE {
 	}
 	
 	//the sbe function for game state. Note that in the game state, the bins for current player are always in the bottom row.
-    private static int sbe(GameState state)
+    public static int sbe(GameState state, double[] weights)
     {
     	int SbeValue = 0;
     	
     	// Add advantage from being able to land in your mancala
-    	SbeValue += landInMancala(state, 2.0);
+    	SbeValue += landInMancala(state, weights[0]);
     	
     	//Checks to see if there is one stone two bins away from mancala
-    	SbeValue +=  checkTwoOut(state, 1.0);
+    	SbeValue +=  checkTwoOut(state, weights[1]);
     	
     	// Add advantage from not having pieces in your bin before mancala
-    	SbeValue += emptyPreMancala(state, 1.0);
+    	SbeValue += emptyPreMancala(state, weights[2]);
     	
     	// Add advantage of potentially being able to steal beans
-    	SbeValue += stealPotential(state, 2.0);
+    	SbeValue += stealPotential(state, weights[3]);
     	
     	// Add advantage from having more pieces
-    	SbeValue += pieceDistribution(state, 2.0);
+    	SbeValue += pieceDistribution(state, weights[4]);
     	
     	// Determine what player has placed more stones in their mancala
-    	SbeValue += pointDifferental(state, 1.0);
+    	SbeValue += pointDifferental(state, weights[5]);
     	
     	// Determine if move will secure victory
     	SbeValue += halfInBin(state);
@@ -108,22 +109,22 @@ public class TestSBE {
     	//Single Bin Functions
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += firstBin(state, 1.0);
+    	SbeValue += firstBin(state, weights[6]);
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += secondBin(state, 1.0);
+    	SbeValue += secondBin(state, weights[7]);
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += thirdBin(state, 1.0);
+    	SbeValue += thirdBin(state, weights[8]);
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += fourthBin(state, 1.0);
+    	SbeValue += fourthBin(state, weights[9]);
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += fifthBin(state, 1.0);
+    	SbeValue += fifthBin(state, weights[10]);
     	
     	// Calculate value from difference in first bin
-    	//SbeValue += sixthBin(state, 1.0);
+    	SbeValue += sixthBin(state, weights[11]);
     	
     	return SbeValue;
     }

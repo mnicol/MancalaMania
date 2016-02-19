@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /****************************************************************
  * studPlayer.java Implements MiniMax search with A-B pruning and iterative
  * deepening search (IDS). The static board evaluator (SBE) function is simple:
@@ -24,8 +22,8 @@ import java.util.ArrayList;
 // studPlayer class
 // ################################################################
 
-public class playerAphaBetaTest extends Player implements WeightAble {
-
+public class BasePlayer extends Player  implements WeightableDouble {
+public double[] Weights;
 	/*
 	 * Use IDS search to find the best move. The step starts from 1 and
 	 * increments by step 1.Note that the search can be interrupted by time
@@ -34,11 +32,18 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 	// Alpha-Beta Search
 	public void move(GameState state) {
 		//I don't know whether or not to call on max action or min action here.
-		int currentDepth = 13;
-
+		int currentDepth = 1;
+		while (true){
 			move = maxAction(state, currentDepth);
-
+			currentDepth ++;
+		}
 		
+	}
+	public BasePlayer() {
+		Weights = new double[TestSBE.NumWeights];
+	}
+	public BasePlayer(double[] weightsP){
+		Weights = weightsP;
 	}
 
 	// Return best move for max player. Note that this is a wrapper function
@@ -72,7 +77,7 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 				}
 			}
 		}
-		System.out.println("ALPHA: " + alpha);
+		
 		
 		return playerMove;
 	}
@@ -116,9 +121,7 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 		int bestVal = Integer.MIN_VALUE;
 
 		for (int i = 0; i < 6; i++) {
-			System.out.println("Max:" + i);
 			if (!state.illegalMove(i)) {
-				
 				GameState temp = new GameState(state);
 
 				if (temp.applyMove(i)) {
@@ -146,7 +149,6 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 		int bestVal = Integer.MAX_VALUE;
 
 		for (int i = 7; i < 13; i++) {
-			System.out.println("Min:" + i);
 			if (!state.illegalMove(i)) {
 				GameState temp = new GameState(state);
 
@@ -166,12 +168,11 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 
 	// the sbe function for game state. Note that in the game state, the bins
 	// for current player are always in the bottom row.
-	private int[] weights = { 1, 1, 2, 2, 1, 1, 4 };
-	private int[] test = {4,6,6,6,6,  7,9,9,9,9,  1,2,2,2,2,  0,1,1,1,1,   8,1,1,1,1,   9,2,2,2,2};
+	private int[] weights = { 6, 5, 4, 3, 2, 1, 20 };
 	private int sbe(GameState state) {
-		int toReturn = state.stoneCount(6) - state.stoneCount(13);
-		//System.out.println("SBE " + toReturn);
-		return toReturn;
+						
+		return TestSBE.sbe(state, this.Weights);
+		
 	}
 
 	/**
@@ -192,120 +193,12 @@ public class playerAphaBetaTest extends Player implements WeightAble {
 	public void SetWeights(int[] weightsT){
 		weights = weightsT;
 	}
-	private class TreeNode{
-		int depth;
-		ArrayList<TreeNode> children;
-		int childNumber;
-		int sbeVal;
-		boolean maxNode;
-		public TreeNode(int depthP, int numP, int sbeValP, boolean maxType) {
-			depth = depthP;
-			children = new ArrayList<playerAphaBetaTest.TreeNode>();
-			childNumber = numP;
-			sbeVal = sbeValP;
-			maxNode = maxType;
-		}
-		
-		public void AddChild(TreeNode child){
-			children.add(child);
-		}
-		public void PrintMe(){
-			String toPrint = "";
-			if(maxNode){
-				toPrint += "X:";
-			}
-			else{
-				toPrint += "N:";
-			}
-			toPrint += "D:" + this.depth +"_" +"C:" + this.childNumber + "_" + "S:" + this.sbeVal + "   ";
-			System.out.print(toPrint);
-		}
+	
+	public void SetWeights(double[] weightsT){
+		Weights = weightsT;
 	}
-	
-	public TreeNode GetOutComes(int depth, GameState game){
-		return GetOutcomesHelperMax(0, depth, -1, game);
-	}
-	
-	public TreeNode GetOutcomesHelperMax(int curDepth, int maxDepth, int child, GameState game){
-		TreeNode toReturn = new TreeNode(curDepth, child, 0, true);
-		if (curDepth == maxDepth){
-			toReturn.sbeVal = this.sbe(game);
-			return toReturn;
-		}
-		for (int i = 0; i < 6; i ++){
-			if (!game.illegalMove(i)){
-				GameState temp = new GameState(game);
-				//now get the child and add it to this current node.
-				
-				if(temp.applyMove(i)){
-					toReturn.AddChild(GetOutcomesHelperMax(curDepth +1, maxDepth, i, temp));
-				}
-				// else get node for other player moving.
-				else{
-					toReturn.AddChild(GetOutcomesHelperMin(curDepth + 1, maxDepth, i, temp));
-				}
-				
-
-			}
-		}
-		
-		
-		return toReturn;
-	}
-	
-	
-	public TreeNode GetOutcomesHelperMin(int curDepth, int maxDepth, int child, GameState game){
-		TreeNode toReturn = new TreeNode(curDepth, child, 0, false);
-		if (curDepth == maxDepth){
-			toReturn.sbeVal = this.sbe(game);
-			return toReturn;
-		}
-		for (int i = 7; i < 13; i ++){
-			if (!game.illegalMove(i)){
-				GameState temp = new GameState(game);
-				//now get the child and add it to this current node.
-				
-				if(temp.applyMove(i)){
-					toReturn.AddChild(GetOutcomesHelperMin(curDepth +1, maxDepth, i, temp));
-				}
-				// else get node for other player moving.
-				else{
-					toReturn.AddChild(GetOutcomesHelperMax(curDepth +1, maxDepth, i, temp));
-				}
-				
-
-			}
-		}
-		
-		
-		return toReturn;
-	}
-	
-	public void PrintPossibilityTree(int depth, GameState game){
-		if(depth > 0){
-			TreeNode root = GetOutComes(depth, game);
-			root.PrintMe();
-			System.out.println("\n");
-			ArrayList<TreeNode> children = root.children;
-			
-			while(!children.isEmpty()){
-				ArrayList<TreeNode> next = new ArrayList<TreeNode>();
-				ArrayList<TreeNode> temp = new ArrayList<TreeNode>();
-				for (int i = 0; i < children.size(); i ++){
-					children.get(i).PrintMe();
-					temp = children.get(i).children;
-					for (int j = 0; j < temp.size(); j ++){
-						next.add(temp.get(j));
-					}
-				}	
-				children = next;
-				System.out.println("\n");
-			}
-			
-		}
-		else{
-			System.out.println("Enter a depth greater than 0 or you will be destroyed!!!!");
-		}
+	public double[] GetWeights(){
+		return Weights;
 	}
 	
 }
