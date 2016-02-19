@@ -26,7 +26,7 @@ public class Colosseum
 	public ArrayList<StandardFighters> BrawlAndGetMostBadAssMother(){
 		ArrayList<StandardFighters> toReturn = new ArrayList<StandardFighters>();
 		for (int i = 0; i < numRandos; i ++ ){
-			for (int j = i; j < numRandos; j ++){
+			for (int j = 0; j < numRandos; j ++){
 				StandardFighters p1 = Randos.get(i);
 				StandardFighters p2 = Randos.get(j);
 				GameStats temp = OneOnOneBrawl(p1, p2, searchDepth);

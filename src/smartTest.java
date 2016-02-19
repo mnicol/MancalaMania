@@ -21,7 +21,7 @@ public class smartTest {
 		}
 		
 		
-		int numRandos = 10000;
+		int numRandos = 1000;
 		Colosseum colosseum = new Colosseum(7, numRandos, 0, null);
 		ArrayList<StandardFighters> bestFighters = colosseum.BrawlAndGetMostBadAssMother();
 		for (int i = 0; i < bestFighters.size(); i ++){
