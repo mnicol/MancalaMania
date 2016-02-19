@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 
@@ -8,9 +11,17 @@ public class smartTest {
 	 */
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
+		PrintStream out;
+		try {
+			out = new PrintStream(new FileOutputStream(startTime + ".txt"));
+			System.setOut(out);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
-		int numRandos = 150;
+		int numRandos = 10000;
 		Colosseum colosseum = new Colosseum(7, numRandos, 0, null);
 		ArrayList<StandardFighters> bestFighters = colosseum.BrawlAndGetMostBadAssMother();
 		for (int i = 0; i < bestFighters.size(); i ++){
