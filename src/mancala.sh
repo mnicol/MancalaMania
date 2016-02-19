@@ -1,8 +1,8 @@
-# Path to where your src is at so you can run this in a diff folder
+# Change to your directory for the java files. Lets you have this script in another file and still run it
 cd ~/private/MancalaMania/MancalaMania/src/
 
-# Gets the date for the file name. You can run cat *.txt > name.txt to combine all the files to one later
+# Gets the date and time when you start running for the filename
 DATE=$(date +%Y-%m-%d:%H:%M:%S)
 
-# Run the smart test $* passes along all the comand line args
+#allows for comand line args with $* and prints to the testResutls directory
 java smartTest $* > "testResults/$DATE.txt"
